@@ -2,59 +2,44 @@ import chalk from 'chalk';
 import {exec} from 'child_process';
 import fs from 'fs';
 import util from 'util';
+import { compareAsc, format, formatDistanceToNow } from 'date-fns'
 
+//ENTER A DATE YYYY, MM, DD
+let yourDate = '2023, 2, 7';
 
-const exec = util.promisify(exec);
-
-// new Promise()
-// 	.then(() => {
-// 		console.log('run await promise has resolved');
-// 	})
-// 	.then(() => {
-// 		new Promise()
-// 			.then(() => {
-// 				console.log('run await promise has resolved');
-// 			})
-// 		});
-
-const first = chalk.yellow('Freddie');
-const last = chalk.cyan('Kaplan');
+const asyncExec = util.promisify(exec);
+const first = ('Freddie');
+const last = ('Kaplan');
 const name = `${first} ${last}`
+const { stdout, stderr } = await asyncExec('git --version');
+const compareDate = format(new Date(yourDate), 'yyyy-MM-dd')
+const startOfCourse = new Date(2023, 0, 31)
+const daysSinceStart = formatDistanceToNow(startOfCourse)
+const todaysDate = format(new Date(), 'yyyy-MM-dd')
+const message = chalk.bgGreen('You entered date ' + yourDate + '. Take a look in index.md.')
+let beforeOrAfter = 'before';
+console.log(message);
 
-console.log(`
-
-${name}
-
-`);
-
-console.log(`npm & node: ${process.env.npm_config_user_agent}`);
-
-exec("git --version", (error, stdout, stderr) => {
-	if (error) {
-		console.log(`error: ${error.message}`);
-		return;
+function dateComparison() {
+	if (compareDate < todaysDate) {
+		beforeOrAfter = 'before';
 	}
-	if (stderr) {
-		console.log(`stderr: ${stderr}`);
-		return;
+	else if (compareDate > todaysDate) {
+		beforeOrAfter = 'after';
 	}
-	console.log(`git version: ${stdout}`);
-});
-
-const writeFile = async (file, data) => {
-	try {
-		await fs.promises.writeFile(file, data);
-		console.log(`The file has been saved asynchronously!`);
-	} catch (err) {
-		console.log('err');
+	else if (compareDate === todaysDate) {
+		beforeOrAfter = 'exactly';
 	}
-};
+}
+dateComparison();
 
 const data = `
-name: ${name}
-npm & node: ${process.env.npm_config_user_agent}
-git version: ${stdout}
+Name: ${name}
+Npm & node: ${process.env.npm_config_user_agent}
+Git version: ${stdout}
+Days since start of course: ${daysSinceStart}
+Today's date: ${todaysDate}
+Your entered date ${compareDate} is ${beforeOrAfter} today's date.
 `;
-await writeFile("index.md", data);
 
-console.log(format(new Date(2014, 0, 22), 'yyyy-mm-dd'))
+await fs.promises.writeFile("index.md", data);
