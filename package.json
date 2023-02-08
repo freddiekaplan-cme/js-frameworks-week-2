@@ -11,6 +11,7 @@
   "author": "Freddie Kaplan",
   "license": "ISC",
   "dependencies": {
+    "@js-temporal/polyfill": "^0.4.3",
     "chalk": "^5.2.0",
     "date-fns": "^2.29.3"
   }
