@@ -27,7 +27,7 @@ const compareDate = format(new Date(yourDate), 'yyyy-MM-dd')
 const startOfCourse = new Date(2023, 0, 31)
 const daysSinceStart = formatDistanceToNow(startOfCourse)
 const todaysDate = format(new Date(), 'yyyy-MM-dd HH:mm')
-const message = chalk.bgGreen('You entered date ' + argumentParser.args[0] + '. Take a look at index.html.')
+const message = chalk.bgGreen('You entered date ' + argumentParser.args[0] + '. Take a look at index.html and index.md.')
 const prettyNpmAndNode = process.env.npm_config_user_agent.slice(0, 23);
 const prettyGit = await gitVersion();
 const todayDateString = compareDate.toString();
@@ -49,7 +49,7 @@ function dateComparison() {
 }
 dateComparison();
 
-const fileContent = `
+const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -86,5 +86,15 @@ const fileContent = `
 </html>
 `;
 
+const fileContent = `
+Name: ${name}
+Npm & node: ${prettyNpmAndNode}
+Git version: ${prettyGit}
+Days since start of course: ${daysSinceStart}
+Today's date and time: ${todaysDate}
+Your entered date ${compareDate} is ${beforeOrAfter} today's date, and is in the year of ${hebrewDate.year} of the Hebrew calendar.
+`;
+
 console.log(message);
-await fs.promises.writeFile("index.html", fileContent);
+await fs.promises.writeFile("index.html", htmlContent);
+await fs.promises.writeFile("index.md", fileContent);
