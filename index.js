@@ -2,13 +2,14 @@ import chalk from 'chalk';
 import {exec} from 'child_process';
 import fs from 'fs';
 import util from 'util';
-import { compareAsc, format, formatDistanceToNow, isAfter, isBefore, parse } from 'date-fns';
-
+import { format, formatDistanceToNow } from 'date-fns';
 import { Temporal, Intl, toTemporalInstant } from '@js-temporal/polyfill';
-Date.prototype.toTemporalInstant = toTemporalInstant;
-
 import { Command } from 'commander';
+
 const argumentParser = new Command();
+argumentParser.option('--date')
+argumentParser.parse();
+const dateArgument = argumentParser.args[0];
 
 const asyncExec = util.promisify(exec);
 const first = ('Freddie');
@@ -24,21 +25,14 @@ const prettyNpmAndNode = process.env.npm_config_user_agent.slice(0, 23);
 const prettyGit = stdout.slice(0, 18);
 //const hebrewCal = Temporal.Calendar.from('hebrew');
 //const hebrewDate = Temporal.Now.plainDateTime('hebrew');
-let beforeOrAfter = 'before';
-
-argumentParser.option('--date')
-argumentParser.parse();
-const dateArgument = argumentParser.args[0];
-
-//ENTER A DATE YYYY, MM, DD
 let yourDate = '2023, 2, 7';
+let beforeOrAfter = 'before';
+Date.prototype.toTemporalInstant = toTemporalInstant;
 
 function dateFormatAdjust() {
 	yourDate = dateArgument.replace(/-/g, ", ");
 }
 dateFormatAdjust();
-
-console.log(message);
 
 function dateComparison() {
 	if (compareDate < todaysDate) {
@@ -56,7 +50,8 @@ dateComparison();
 // cal = Temporal.Calendar.from('hebrew')
 // const today = date.withCalendar('hebrew');
 // console.log(today.toString());
-//Today's date in the Hebrew calendar: ${hebrewDate}
+
+console.log(message);
 
 const fileContent = `
 Name: ${name}
@@ -64,6 +59,7 @@ Npm & node: ${prettyNpmAndNode}
 Git version: ${prettyGit}
 Days since start of course: ${daysSinceStart}
 Today's date: ${todaysDate}
+Today's date in the Hebrew calendar: ${hebrewDate}
 Your entered date ${compareDate} is ${beforeOrAfter} today's date.
 `;
 
