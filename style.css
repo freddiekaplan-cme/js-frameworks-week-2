@@ -42,6 +42,11 @@ body {
 	margin-bottom: 12px;
 }
 
+.results {
+	font-weight: 700;
+}
+
+
 .footer {
 	background-color: #262b46;
 }
