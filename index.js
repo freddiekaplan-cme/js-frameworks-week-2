@@ -87,7 +87,7 @@ const fileContent = `
 				Today's date: ${todaysDate}
 			</div>
 			<div class="content-item">
-				Your entered date ${compareDate} is ${beforeOrAfter} today's date.
+				The entered date ${compareDate} is ${beforeOrAfter} today's date.
 			</div>
     	</main>
 		<footer class="footer">
@@ -96,9 +96,5 @@ const fileContent = `
 </body>
 </html>
 `;
-
-console.log(yourDate);
-console.log(compareDate);
-console.log(todaysDate);
 
 await fs.promises.writeFile("index.html", fileContent);
